@@ -9,12 +9,12 @@ class Table extends Component {
         <p
           data-testid="email-field"
         >
-          {user.email}
+          {user}
         </p>
         <p
           data-testid="total-field"
         >
-          {total}
+          {total.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}
         </p>
         <p
           data-testid="header-currency-field"
@@ -26,11 +26,14 @@ class Table extends Component {
   }
 }
 
-Table.proptypes = {
-  user: PropTypes.shape({
-    email: PropTypes.string.isRequired,
-  }),
-  total: PropTypes.number.isRequired,
+Table.propTypes = {
+  user: PropTypes.string,
+  total: PropTypes.number,
+};
+
+Table.defaultProps = {
+  user: 'test@test.com',
+  total: 0,
 };
 
 export default Table;
