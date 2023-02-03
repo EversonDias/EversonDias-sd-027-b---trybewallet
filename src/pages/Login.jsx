@@ -7,7 +7,10 @@ class Login extends Component {
   constructor() {
     super();
     this.state = {
-      email: '',
+      user: {
+        email: '',
+        password: '',
+      },
       verifyPassword: '',
       verifyEmail: '',
     };
@@ -33,15 +36,18 @@ class Login extends Component {
 
   saveState({ target: { name, value } }) {
     this.verify(name, value);
-    this.setState({
-      [name]: value,
-    });
+    this.setState((oldState) => ({
+      user: {
+        ...oldState.user,
+        [name]: value,
+      },
+    }));
   }
 
   saveLogin() {
     const { dispatch, history } = this.props;
-    const { email } = this.state;
-    dispatch(login({ email }));
+    const { user } = this.state;
+    dispatch(login(user));
     history.push('/carteira');
   }
 
