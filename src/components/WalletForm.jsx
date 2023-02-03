@@ -1,14 +1,24 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { fetchCurrency } from '../redux/actions';
 
 class WalletForm extends Component {
+  componentDidMount() {
+    this.createCurrency();
+  }
+
+  createCurrency() {
+    const { dispatch } = this.props;
+    dispatch(fetchCurrency());
+  }
+
   render() {
     const {
+      currency,
       addExpenses,
       saveExpenses,
-      currency,
-      description,
-      value,
+      expense: { value, description },
     } = this.props;
     return (
       <form>
@@ -45,10 +55,10 @@ class WalletForm extends Component {
         >
           {currency.map((data) => (
             <option
-              key={ data.code }
-              value={ data.code }
+              key={ data }
+              value={ data }
             >
-              {data.code}
+              {data}
             </option>
           ))}
         </select>
@@ -59,7 +69,7 @@ class WalletForm extends Component {
         >
           <option value="dinheiro">Dinheiro</option>
           <option value="credito">Cartão de crédito</option>
-          <option value="debito">Cartão de Débito</option>
+          <option value="debito">Cartão de débito</option>
         </select>
         <select
           data-testid="tag-input"
@@ -84,19 +94,18 @@ class WalletForm extends Component {
 }
 
 WalletForm.propTypes = {
-  addExpenses: PropTypes.func,
-  saveExpenses: PropTypes.func,
-  currency: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)),
-  description: PropTypes.string,
-  value: PropTypes.string,
+  currency: PropTypes.arrayOf(PropTypes.string).isRequired,
+  dispatch: PropTypes.func.isRequired,
+  addExpenses: PropTypes.func.isRequired,
+  saveExpenses: PropTypes.func.isRequired,
+  expense: PropTypes.shape({
+    value: PropTypes.string,
+    description: PropTypes.string,
+  }).isRequired,
 };
 
-WalletForm.defaultProps = {
-  addExpenses: () => {},
-  saveExpenses: () => {},
-  currency: [],
-  description: 'description',
-  value: 'value',
-};
+const mapStateToProps = (globalState) => ({
+  currency: globalState.currencies,
+});
 
-export default WalletForm;
+export default connect(mapStateToProps)(WalletForm);

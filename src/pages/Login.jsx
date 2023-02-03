@@ -49,27 +49,26 @@ class Login extends Component {
     const { verifyEmail, verifyPassword } = this.state;
     const disabled = verifyEmail && verifyPassword;
     return (
-      <form>
-        <label
-          htmlFor="email"
-        >
+      <div>
+        <p>
           Email
-          <input
-            type="email"
-            data-testid="email-input"
-            name="email"
-            onChange={ this.saveState }
-          />
-        </label>
-        <label htmlFor="password">
+        </p>
+        <input
+          type="email"
+          data-testid="email-input"
+          name="email"
+          id="email"
+          onChange={ this.saveState }
+        />
+        <p>
           Senha
-          <input
-            type="password"
-            name="password"
-            data-testid="password-input"
-            onChange={ this.saveState }
-          />
-        </label>
+        </p>
+        <input
+          type="password"
+          name="password"
+          data-testid="password-input"
+          onChange={ this.saveState }
+        />
         <button
           type="button"
           onClick={ this.saveLogin }
@@ -77,7 +76,7 @@ class Login extends Component {
         >
           Entrar
         </button>
-      </form>
+      </div>
     );
   }
 }

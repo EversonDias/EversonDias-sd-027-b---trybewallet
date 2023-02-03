@@ -89,16 +89,14 @@ class Header extends Component {
   }
 
   render() {
-    const { total, expense: { description, value }, currency } = this.state;
+    const { total, expense } = this.state;
     const { user: { email } } = this.props;
     return (
       <header>
         <WalletForm
-          saveExpenses={ this.saveExpenses }
           addExpenses={ this.addExpenses }
-          description={ description }
-          value={ value }
-          currency={ currency }
+          saveExpenses={ this.saveExpenses }
+          expense={ expense }
         />
         <Table
           user={ email }
@@ -117,12 +115,9 @@ Header.propTypes = {
   }).isRequired,
 };
 
-const mapStateToProps = (globalState) => {
-  console.log(globalState.user);
-  return (
-    { user: globalState.user,
-      wallet: globalState.wallet,
-    });
-};
+const mapStateToProps = (globalState) => (
+  { user: globalState.user,
+    wallet: globalState.wallet,
+  });
 
 export default connect(mapStateToProps)(Header);
