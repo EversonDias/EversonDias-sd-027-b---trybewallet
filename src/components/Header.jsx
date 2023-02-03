@@ -89,7 +89,8 @@ class Header extends Component {
   }
 
   render() {
-    const { total, user, expense: { description, value }, currency } = this.state;
+    const { total, expense: { description, value }, currency } = this.state;
+    const { user: { email } } = this.props;
     return (
       <header>
         <WalletForm
@@ -100,7 +101,7 @@ class Header extends Component {
           currency={ currency }
         />
         <Table
-          user={ user }
+          user={ email }
           total={ total }
         />
       </header>
@@ -111,11 +112,17 @@ class Header extends Component {
 Header.propTypes = {
   dispatch: PropTypes.func.isRequired,
   wallet: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
+  user: PropTypes.shape({
+    email: PropTypes.string,
+  }).isRequired,
 };
 
-const mapStateToProps = (globalState) => ({
-  user: globalState.user,
-  wallet: globalState.wallet,
-});
+const mapStateToProps = (globalState) => {
+  console.log(globalState.user);
+  return (
+    { user: globalState.user,
+      wallet: globalState.wallet,
+    });
+};
 
 export default connect(mapStateToProps)(Header);

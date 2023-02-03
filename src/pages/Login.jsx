@@ -8,12 +8,31 @@ class Login extends Component {
     super();
     this.state = {
       email: '',
+      verifyPassword: '',
+      verifyEmail: '',
     };
     this.saveLogin = this.saveLogin.bind(this);
     this.saveState = this.saveState.bind(this);
   }
 
+  verify(name, value) {
+    if (name === 'email') {
+      const verify = /\S+@\S+\.\S+/;
+      const verifyEmail = verify.test(value);
+      this.setState({
+        verifyEmail,
+      });
+    } else {
+      const minPassword = 6;
+      const verifyPassword = value.length >= minPassword;
+      this.setState({
+        verifyPassword,
+      });
+    }
+  }
+
   saveState({ target: { name, value } }) {
+    this.verify(name, value);
     this.setState({
       [name]: value,
     });
@@ -22,11 +41,13 @@ class Login extends Component {
   saveLogin() {
     const { dispatch, history } = this.props;
     const { email } = this.state;
-    dispatch(login(email));
+    dispatch(login({ email }));
     history.push('/carteira');
   }
 
   render() {
+    const { verifyEmail, verifyPassword } = this.state;
+    const disabled = verifyEmail && verifyPassword;
     return (
       <div>
         <form>
@@ -53,6 +74,7 @@ class Login extends Component {
           <button
             type="button"
             onClick={ this.saveLogin }
+            disabled={ !disabled }
           >
             Entrar
           </button>
