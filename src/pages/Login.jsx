@@ -17,7 +17,7 @@ class Login extends Component {
 
   verify(name, value) {
     if (name === 'email') {
-      const verify = /\S+@\S+\.\S+/;
+      const verify = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
       const verifyEmail = verify.test(value);
       this.setState({
         verifyEmail,
@@ -49,37 +49,35 @@ class Login extends Component {
     const { verifyEmail, verifyPassword } = this.state;
     const disabled = verifyEmail && verifyPassword;
     return (
-      <div>
-        <form>
-          <label
-            htmlFor="email"
-          >
-            Email
-            <input
-              type="email"
-              data-testid="email-input"
-              name="email"
-              onChange={ this.saveState }
-            />
-          </label>
-          <label htmlFor="password">
-            Senha
-            <input
-              type="password"
-              name="password"
-              data-testid="password-input"
-              onChange={ this.saveState }
-            />
-          </label>
-          <button
-            type="button"
-            onClick={ this.saveLogin }
-            disabled={ !disabled }
-          >
-            Entrar
-          </button>
-        </form>
-      </div>
+      <form>
+        <label
+          htmlFor="email"
+        >
+          Email
+          <input
+            type="email"
+            data-testid="email-input"
+            name="email"
+            onChange={ this.saveState }
+          />
+        </label>
+        <label htmlFor="password">
+          Senha
+          <input
+            type="password"
+            name="password"
+            data-testid="password-input"
+            onChange={ this.saveState }
+          />
+        </label>
+        <button
+          type="button"
+          onClick={ this.saveLogin }
+          disabled={ !disabled }
+        >
+          Entrar
+        </button>
+      </form>
     );
   }
 }
