@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { login } from '../redux/actions';
+import { login, fetchCurrency } from '../redux/actions';
 
 class Login extends Component {
   constructor() {
@@ -44,9 +44,10 @@ class Login extends Component {
     }));
   }
 
-  saveLogin() {
+  async saveLogin() {
     const { dispatch, history } = this.props;
     const { user } = this.state;
+    await dispatch(fetchCurrency());
     dispatch(login(user));
     history.push('/carteira');
   }

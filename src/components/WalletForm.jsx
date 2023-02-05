@@ -1,24 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchCurrency } from '../redux/actions';
 
 class WalletForm extends Component {
-  componentDidMount() {
-    this.createCurrency();
-  }
-
-  createCurrency() {
-    const { dispatch } = this.props;
-    dispatch(fetchCurrency());
-  }
-
   render() {
     const {
-      currency,
+      wallet: { currencies },
+      value,
+      description,
       addExpenses,
       saveExpenses,
-      expense: { value, description },
     } = this.props;
     return (
       <form>
@@ -53,7 +44,7 @@ class WalletForm extends Component {
           name="currency"
           onChange={ addExpenses }
         >
-          {currency.map((data) => (
+          {[...currencies].map((data) => (
             <option
               key={ data }
               value={ data }
@@ -94,18 +85,18 @@ class WalletForm extends Component {
 }
 
 WalletForm.propTypes = {
-  currency: PropTypes.arrayOf(PropTypes.string).isRequired,
-  dispatch: PropTypes.func.isRequired,
+  wallet: PropTypes.shape({
+    currencies: PropTypes.arrayOf(PropTypes.string),
+  }).isRequired,
   addExpenses: PropTypes.func.isRequired,
   saveExpenses: PropTypes.func.isRequired,
-  expense: PropTypes.shape({
-    value: PropTypes.string,
-    description: PropTypes.string,
-  }).isRequired,
+  value: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (globalState) => ({
-  currency: globalState.currencies,
+  wallet: globalState.wallet,
+  expense: globalState.expense,
 });
 
 export default connect(mapStateToProps)(WalletForm);

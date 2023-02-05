@@ -1,13 +1,30 @@
-import { ADD_REGISTER, DELETE_REGISTER } from '../actions';
+import {
+  ADD_EXPENSES,
+  DELETE_REGISTER,
+  ADD_CURRENCY,
+} from '../actions';
 
-const initialState = [];
+const initialState = {
+};
 
-const registerReducer = (state = initialState, action) => {
-  switch (action.type) {
-  case ADD_REGISTER:
-    return [...state, action.data];
+const registerReducer = (state = initialState, { type, value }) => {
+  switch (type) {
+  case ADD_EXPENSES:
+    return state.expenses ? {
+      ...state,
+      expenses: [...state.expenses,
+        value],
+    } : {
+      ...state,
+      expenses: [value],
+    };
   case DELETE_REGISTER:
-    return state.filter((register) => register !== action.value);
+    return state.filter((register) => register !== value);
+  case ADD_CURRENCY:
+    return {
+      ...state,
+      currencies: value,
+    };
   default:
     return state;
   }

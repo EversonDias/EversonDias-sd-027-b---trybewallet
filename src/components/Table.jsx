@@ -1,20 +1,21 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 class Table extends Component {
   render() {
-    const { user, total } = this.props;
+    const { user: { email }, total } = this.props;
     return (
       <div>
         <p
           data-testid="email-field"
         >
-          {user}
+          {email}
         </p>
         <p
           data-testid="total-field"
         >
-          {total.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}
+          {total.toLocaleString('en-IN', { maximumFractionDigits: 2 })}
         </p>
         <p
           data-testid="header-currency-field"
@@ -27,13 +28,14 @@ class Table extends Component {
 }
 
 Table.propTypes = {
-  user: PropTypes.string,
-  total: PropTypes.number,
+  user: PropTypes.shape({
+    email: PropTypes.string,
+  }).isRequired,
+  total: PropTypes.number.isRequired,
 };
 
-Table.defaultProps = {
-  user: 'test@test.com',
-  total: 0,
-};
+const mapStateToProps = (globalState) => ({
+  user: globalState.user,
+});
 
-export default Table;
+export default connect(mapStateToProps)(Table);

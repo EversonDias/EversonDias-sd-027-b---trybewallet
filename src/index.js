@@ -15,3 +15,7 @@ ReactDOM
       </BrowserRouter>
     </Provider>,
   );
+
+if (window.Cypress) {
+  window.store = store;
+}
