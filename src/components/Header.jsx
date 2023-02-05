@@ -10,19 +10,19 @@ class Header extends Component {
     super();
     this.state = {
       expenses: {
-        id: '0',
+        id: 0,
         value: '',
         description: '',
         currency: 'USD',
-        method: 'dinheiro',
-        tag: 'alimentacao',
+        method: 'Dinheiro',
+        tag: 'Alimentação',
       },
       total: 0,
     };
     this.addExpenses = this.addExpenses.bind(this);
     this.saveExpenses = this.saveExpenses.bind(this);
     this.createId = this.createId.bind(this);
-    this.createASK = this.createASK.bind(this);
+    this.addExchangeRates = this.addExchangeRates.bind(this);
     this.totalSum = this.totalSum.bind(this);
   }
 
@@ -47,21 +47,23 @@ class Header extends Component {
     }
   }
 
-  async createASK() {
-    const { expenses: { currency } } = this.state;
+  async addExchangeRates() {
     const responseAPI = await fetch('https://economia.awesomeapi.com.br/json/all');
     const responseJSON = await responseAPI.json();
-    const listOfCurrency = [...Object.values(responseJSON)];
-    const data = listOfCurrency.filter(
-      ({ code, codein }) => code === currency && codein !== 'BRLT',
-    );
-    return data[0].ask;
+    return responseJSON;
   }
 
   totalSum() {
     const { wallet: { expenses } } = this.props;
-    const currency = [...expenses].map(({ ask, value }) => Number(ask) * Number(value));
-    const total = currency.reduce((acc, cur) => acc + cur);
+    const listOfExchangeRates = [...expenses].map(({
+      exchangeRates,
+      currency,
+      value,
+    }) => {
+      const { ask } = exchangeRates[currency];
+      return Number(ask) * Number(value);
+    });
+    const total = listOfExchangeRates.reduce((acc, cur) => acc + cur);
     this.setState({
       total,
     });
@@ -69,14 +71,14 @@ class Header extends Component {
 
   async saveExpenses() {
     this.createId();
-    const ask = await this.createASK();
+    const exchangeRates = await this.addExchangeRates();
     const { expenses } = this.state;
     const { dispatch } = this.props;
-    const add = {
+    const addExpenses = {
       ...expenses,
-      ask,
+      exchangeRates,
     };
-    await dispatch(addRegister(add));
+    await dispatch(addRegister(addExpenses));
     this.totalSum();
     this.setState((oldState) => ({
       expenses: {
