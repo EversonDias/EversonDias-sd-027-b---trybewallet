@@ -113,7 +113,9 @@ class Header extends Component {
 Header.propTypes = {
   dispatch: PropTypes.func.isRequired,
   wallet: PropTypes.shape({
-    expenses: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)),
+    expenses: PropTypes.shape({
+      id: PropTypes.number,
+    }),
   }).isRequired,
 };
 

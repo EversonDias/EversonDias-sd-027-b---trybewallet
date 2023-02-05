@@ -11,8 +11,8 @@ class Login extends Component {
         email: '',
         password: '',
       },
-      verifyPassword: '',
-      verifyEmail: '',
+      verifyPassword: false,
+      verifyEmail: false,
     };
     this.saveLogin = this.saveLogin.bind(this);
     this.saveState = this.saveState.bind(this);
@@ -47,8 +47,8 @@ class Login extends Component {
   async saveLogin() {
     const { dispatch, history } = this.props;
     const { user } = this.state;
-    await dispatch(fetchCurrency());
     dispatch(login(user));
+    await dispatch(fetchCurrency());
     history.push('/carteira');
   }
 
@@ -57,25 +57,25 @@ class Login extends Component {
     const disabled = verifyEmail && verifyPassword;
     return (
       <div>
-        <p>
+        <label htmlFor="email">
           Email
-        </p>
-        <input
-          type="email"
-          data-testid="email-input"
-          name="email"
-          id="email"
-          onChange={ this.saveState }
-        />
-        <p>
+          <input
+            type="email"
+            data-testid="email-input"
+            name="email"
+            id="email"
+            onChange={ this.saveState }
+          />
+        </label>
+        <label htmlFor="password">
           Senha
-        </p>
-        <input
-          type="password"
-          name="password"
-          data-testid="password-input"
-          onChange={ this.saveState }
-        />
+          <input
+            type="password"
+            name="password"
+            data-testid="password-input"
+            onChange={ this.saveState }
+          />
+        </label>
         <button
           type="button"
           onClick={ this.saveLogin }
