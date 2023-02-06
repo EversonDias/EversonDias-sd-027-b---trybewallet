@@ -5,6 +5,8 @@ import {
 } from '../actions';
 
 const initialState = {
+  currencies: [],
+  expenses: [],
 };
 
 const registerReducer = (state = initialState, { type, value }) => {
@@ -19,7 +21,13 @@ const registerReducer = (state = initialState, { type, value }) => {
       expenses: [value],
     };
   case DELETE_REGISTER:
-    return state.filter((register) => register !== value);
+    return value ? {
+      ...state,
+      expenses: [value],
+    } : {
+      ...state,
+      expenses: [],
+    };
   case ADD_CURRENCY:
     return {
       ...state,

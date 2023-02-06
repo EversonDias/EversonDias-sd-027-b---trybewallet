@@ -7,12 +7,8 @@ class Table extends Component {
     console.log(target);
   }
 
-  handleDelete({ target }) {
-    console.log(target);
-  }
-
   render() {
-    const { wallet: { expenses } } = this.props;
+    const { wallet: { expenses }, deleteExpense } = this.props;
     return (
       <table>
         <thead>
@@ -83,9 +79,10 @@ class Table extends Component {
                       Editar
                     </button>
                     <button
+                      data-testid="delete-btn"
                       type="button"
                       id={ id }
-                      onClick={ this.handleDelete }
+                      onClick={ deleteExpense }
                     >
                       Excluir
                     </button>
@@ -101,6 +98,7 @@ class Table extends Component {
 }
 
 Table.propTypes = {
+  deleteExpense: PropTypes.func.isRequired,
   wallet: PropTypes.shape({
     expenses: PropTypes.arrayOf(
       PropTypes.shape({

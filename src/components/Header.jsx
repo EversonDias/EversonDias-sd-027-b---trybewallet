@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import TableTotal from './TableTotal';
 import WalletForm from './WalletForm';
 import { addRegister } from '../redux/actions';
 
@@ -17,13 +16,16 @@ class Header extends Component {
         method: 'Dinheiro',
         tag: 'Alimentação',
       },
-      total: 0,
     };
     this.addExpenses = this.addExpenses.bind(this);
     this.saveExpenses = this.saveExpenses.bind(this);
     this.createId = this.createId.bind(this);
     this.addExchangeRates = this.addExchangeRates.bind(this);
     this.totalSum = this.totalSum.bind(this);
+  }
+
+  componentDidMount() {
+    this.totalSum();
   }
 
   addExpenses({ target: { name, value } }) {
@@ -37,11 +39,13 @@ class Header extends Component {
 
   createId() {
     const { wallet: { expenses } } = this.props;
-    if (expenses) {
+    if ([...expenses].length > 0) {
+      const positionExpenses = [...expenses].length - 1;
+      const id = [...expenses][positionExpenses].id + 1;
       this.setState((oldState) => ({
         expenses: {
           ...oldState.expenses,
-          id: [...expenses].length,
+          id,
         },
       }));
     }
@@ -54,19 +58,21 @@ class Header extends Component {
   }
 
   totalSum() {
-    const { wallet: { expenses } } = this.props;
-    const listOfExchangeRates = [...expenses].map(({
-      exchangeRates,
-      currency,
-      value,
-    }) => {
-      const { ask } = exchangeRates[currency];
-      return Number(ask) * Number(value);
-    });
-    const total = listOfExchangeRates.reduce((acc, cur) => acc + cur);
-    this.setState({
-      total,
-    });
+    const { wallet: { expenses }, addTotal } = this.props;
+    if ([...expenses].length > 0) {
+      const listOfExchangeRates = [...expenses].map(({
+        exchangeRates,
+        currency,
+        value,
+      }) => {
+        const { ask } = exchangeRates[currency];
+        return Number(ask) * Number(value);
+      });
+      const total = listOfExchangeRates.reduce((acc, cur) => acc + cur);
+      addTotal(total);
+    } else {
+      addTotal(0);
+    }
   }
 
   async saveExpenses() {
@@ -92,8 +98,8 @@ class Header extends Component {
   render() {
     const {
       expenses: { value, description },
-      total,
     } = this.state;
+    const { user: { email }, total } = this.props;
     return (
       <header>
         <WalletForm
@@ -102,9 +108,25 @@ class Header extends Component {
           description={ description }
           value={ value }
         />
-        <TableTotal
-          total={ total }
-        />
+        <div>
+          <p
+            data-testid="email-field"
+          >
+            {email}
+          </p>
+          <p
+            data-testid="total-field"
+          >
+            {total.toLocaleString('en-IN', {
+              minimumFractionDigits: 2, maximumFractionDigits: 2,
+            })}
+          </p>
+          <p
+            data-testid="header-currency-field"
+          >
+            BRL
+          </p>
+        </div>
       </header>
     );
   }
@@ -119,10 +141,16 @@ Header.propTypes = {
       }).isRequired,
     ),
   }).isRequired,
+  user: PropTypes.shape({
+    email: PropTypes.string,
+  }).isRequired,
+  total: PropTypes.number.isRequired,
+  addTotal: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (globalState) => ({
   wallet: globalState.wallet,
+  user: globalState.user,
 });
 
 export default connect(mapStateToProps)(Header);
