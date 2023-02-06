@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import Table from './Table';
+import TableTotal from './TableTotal';
 import WalletForm from './WalletForm';
 import { addRegister } from '../redux/actions';
 
@@ -102,7 +102,7 @@ class Header extends Component {
           description={ description }
           value={ value }
         />
-        <Table
+        <TableTotal
           total={ total }
         />
       </header>
