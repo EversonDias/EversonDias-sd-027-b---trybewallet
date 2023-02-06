@@ -41,23 +41,36 @@ class Table extends Component {
               id,
             }) => {
               const exchanger = exchangeRates[currency].ask;
+              const coin = exchangeRates[currency].name;
+              const convertedValue = Number(exchanger)
+                .toLocaleString('en-IN', {
+                  minimumFractionDigits: 2, maximumFractionDigits: 2,
+                });
+              const conversionCurrency = (
+                Number(exchangeRates[currency].ask) * Number(value)
+              )
+                .toLocaleString('en-IN', {
+                  minimumFractionDigits: 2, maximumFractionDigits: 2,
+                });
+              const valueCurrency = Number(value)
+                .toLocaleString('en-IN', {
+                  minimumFractionDigits: 2, maximumFractionDigits: 2,
+                });
               return (
                 <tr key={ id }>
                   <td>{description}</td>
                   <td>{tag}</td>
                   <td>{method}</td>
-                  <td>{value}</td>
-                  <td>{currency}</td>
+                  <td>{valueCurrency}</td>
+                  <td>{coin}</td>
                   <td>
                     {
-                      Number(exchanger)
-                        .toLocaleString('en-IN', { maximumFractionDigits: 2 })
+                      convertedValue
                     }
                   </td>
                   <td>
                     {
-                      (Number(exchangeRates[currency].ask) * Number(value))
-                        .toLocaleString('en-IN', { maximumFractionDigits: 2 })
+                      conversionCurrency
                     }
                   </td>
                   <td>Real</td>
@@ -89,9 +102,11 @@ class Table extends Component {
 
 Table.propTypes = {
   wallet: PropTypes.shape({
-    expenses: PropTypes.shape({
-      id: PropTypes.number,
-    }),
+    expenses: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.number,
+      }).isRequired,
+    ),
   }).isRequired,
 };
 
