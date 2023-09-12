@@ -102,31 +102,30 @@ class Header extends Component {
     const { user: { email }, total } = this.props;
     return (
       <header>
-        <WalletForm
-          addExpenses={ this.addExpenses }
-          saveExpenses={ this.saveExpenses }
-          description={ description }
-          value={ value }
-        />
-        <div>
+        <div className="max-w-[800px] flex justify-evenly">
           <p
             data-testid="email-field"
+            className="font-medium"
           >
             {email}
           </p>
           <p
             data-testid="total-field"
           >
-            {total.toLocaleString('en-IN', {
-              minimumFractionDigits: 2, maximumFractionDigits: 2,
+            {total.toLocaleString('pt-BR', {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+              style: 'currency',
+              currency: 'BRL',
             })}
           </p>
-          <p
-            data-testid="header-currency-field"
-          >
-            BRL
-          </p>
         </div>
+        <WalletForm
+          addExpenses={ this.addExpenses }
+          saveExpenses={ this.saveExpenses }
+          description={ description }
+          value={ value }
+        />
       </header>
     );
   }

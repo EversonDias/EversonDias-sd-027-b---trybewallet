@@ -12,11 +12,12 @@ class WalletForm extends Component {
       saveExpenses,
     } = this.props;
     return (
-      <form>
+      <form className="flex flex-col lg:flex-row gap-8 justify-center items-end">
         <label
           htmlFor="value"
+          className="flex flex-col w-full max-w-xs h-20 justify-end"
         >
-          Value
+          <span className="font-medium">Value: </span>
           <input
             type="text"
             id="value"
@@ -24,12 +25,14 @@ class WalletForm extends Component {
             value={ value }
             data-testid="value-input"
             onChange={ addExpenses }
+            className="input input-bordered input-accent  w-full max-w-xs"
           />
         </label>
         <label
           htmlFor="description"
+          className="flex flex-col  w-full max-w-xs h-20 justify-end"
         >
-          Description
+          <span className="font-medium">Description: </span>
           <input
             type="text"
             id="description"
@@ -37,12 +40,14 @@ class WalletForm extends Component {
             value={ description }
             data-testid="description-input"
             onChange={ addExpenses }
+            className="input input-bordered input-accent w-full max-w-xs"
           />
         </label>
         <select
           data-testid="currency-input"
           name="currency"
           onChange={ addExpenses }
+          className="select select-accent w-full max-w-xs"
         >
           {[...currencies].map((data) => (
             <option
@@ -57,6 +62,7 @@ class WalletForm extends Component {
           data-testid="method-input"
           name="method"
           onChange={ addExpenses }
+          className="select select-accent w-full max-w-xs"
         >
           <option value="Dinheiro">Dinheiro</option>
           <option value="Cartão de crédito">Cartão de crédito</option>
@@ -66,6 +72,7 @@ class WalletForm extends Component {
           data-testid="tag-input"
           name="tag"
           onChange={ addExpenses }
+          className="select select-accent w-full max-w-xs"
         >
           <option value="Alimentação">Alimentação</option>
           <option value="Lazer">Lazer</option>
@@ -76,6 +83,7 @@ class WalletForm extends Component {
         <button
           type="button"
           onClick={ saveExpenses }
+          className="btn btn-success"
         >
           Adicionar despesa
         </button>

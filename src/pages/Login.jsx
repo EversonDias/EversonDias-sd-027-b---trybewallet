@@ -56,33 +56,41 @@ class Login extends Component {
     const { verifyEmail, verifyPassword } = this.state;
     const disabled = verifyEmail && verifyPassword;
     return (
-      <div>
-        <label htmlFor="email">
-          Email
-          <input
-            type="email"
-            data-testid="email-input"
-            name="email"
-            id="email"
-            onChange={ this.saveState }
-          />
-        </label>
-        <label htmlFor="password">
-          Senha
-          <input
-            type="password"
-            name="password"
-            data-testid="password-input"
-            onChange={ this.saveState }
-          />
-        </label>
-        <button
-          type="button"
-          onClick={ this.saveLogin }
-          disabled={ !disabled }
+      <div className="flex justify-center items-center min-h-screen wallpaper">
+        <div
+          className="w-72 h-96 flex flex-col items-center
+          justify-center gap-8 rounded-xl shadow-2xl backdrop-blur-md"
         >
-          Entrar
-        </button>
+          <label htmlFor="email">
+            <span className="text-white font-medium">Email:</span>
+            <input
+              type="email"
+              data-testid="email-input"
+              className="input input-bordered input-success w-full max-w-xs"
+              name="email"
+              id="email"
+              onChange={ this.saveState }
+            />
+          </label>
+          <label htmlFor="password">
+            <span className="text-white font-medium">Senha:</span>
+            <input
+              type="password"
+              name="password"
+              className="input input-bordered input-success w-full max-w-xs"
+              data-testid="password-input"
+              onChange={ this.saveState }
+            />
+          </label>
+          <button
+            type="button"
+            onClick={ this.saveLogin }
+            disabled={ !disabled }
+            className="btn btn-success"
+          >
+            Entrar
+          </button>
+        </div>
       </div>
     );
   }
